@@ -7,19 +7,27 @@ import config
 import socket
 
 
-class COSTS_STR_INCORRECT(Exception):
+class INCORRECT_STR(Exception):
     pass
 
-class DIST_STR_INCORRECT(Exception):
+
+class COSTS_STR_INCORRECT(INCORRECT_STR):
     pass
 
-class DEMAND_STR_INCORRECT(Exception):
+
+class DIST_STR_INCORRECT(INCORRECT_STR):
     pass
 
-class PROFIT_STR_INCORRECT(Exception):
+
+class DEMAND_STR_INCORRECT(INCORRECT_STR):
     pass
 
-class CONNECTION_NOT_ACCEPTED(Exception):
+
+class PROFIT_STR_INCORRECT(INCORRECT_STR):
+    pass
+
+
+class CONNECTION_NOT_ACCEPTED(INCORRECT_STR):
     pass
 
 
