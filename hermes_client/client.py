@@ -19,6 +19,7 @@ class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
 
     _con = None
+    _costs = None
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
         self._con = socket.create_connection(conn)
