@@ -1,5 +1,5 @@
-HOST = 'carbon.hostedgraphite.com'
-PORT = 2003
-ENC_KEY = ''
+HOST = 'localhost'
+PORT = 8125
+ENC_KEY = '0'
 SAMPLE_RATE = 1
 DISABLED = False
