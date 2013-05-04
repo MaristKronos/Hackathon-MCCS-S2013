@@ -1,13 +1,15 @@
+import config
+
 import socket
 
-sock = socket.create_connection(('hackathon.hopto.org', 31671))
-sock.send('INIT Kronos')
-print sock.recv(999)
-sock.send('RECD')
-print sock.recv(999)
-sock.send('START')
-print sock.recv(999)
-sock.send('STOP')
-print (sock.recv(999))
+sock = socket.create_connection(config.CONNECTION_TUPLES[0])
+sock.send(config.BEGIN)
+print sock.recv(config.MAX_PACKET_SIZE)
+sock.send(config.RECEIVE)
+print sock.recv(config.MAX_PACKET_SIZE)
+sock.send(config.START)
+print sock.recv(config.MAX_PACKET_SIZE)
+sock.send(config.STOP)
+
 sock.shutdown(socket.SHUT_RDWR)
 sock.close()
