@@ -1,0 +1,2 @@
+python-statsd==1.6.0
+wsgiref==0.1.2

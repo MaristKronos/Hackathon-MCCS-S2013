@@ -4,18 +4,26 @@
 import config
 
 # Vendor imports
-import socket
+import statsd
 
 
 class Statsd(object):
     _statsd = None
     _enc = ''
 
-    def __init__(self, host=config.HOST, port=config.PORT, enc=config.ENC_KEY):
-        self._statsd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._.bind((host, port))
-        self._enc = enc
+    def __init__(
+        self,
+        host=config.host,
+        port=config.port,
+        sample_rate=config.sample_rate,
+        disabled=config.disabled
+    ):
+        self._statsd = statsd.Connection.set_defaults(
+            host,
+            port,
+            sample_rate,
+            disabled
+        )
 
     def __del__(self):
-        self._stastd.shutdown(socket.SHUT_RDWR)
         self._stastd.close()
