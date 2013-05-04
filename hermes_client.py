@@ -7,6 +7,10 @@ import config
 import socket
 
 
+class COSTS_STR_TOO_LONG(Exception):
+    pass
+
+
 class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
 
