@@ -75,9 +75,10 @@ class Hermes_Client(object):
         self.send(msg)
         return self.receive()
 
-    def parse_costs(self, costs_str):	
+    def parse_costs(self, costs_str):
 
-	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        # TODO: This regex is used frequently, compile it when
+        # there is time to look that up.
         costs_list = re.split('\s+', costs_str)
         if costs_list[0] != "COSTS" and len(costs_list) != 5:
             raise COSTS_STR_INCORRECT
@@ -93,7 +94,8 @@ class Hermes_Client(object):
 
     def parse_dist(self, dist_str):
 
-	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        # TODO: This regex is used frequently, compile it when
+        # there is time to look that up.
         dist_list = re.split('\s+', dist_str)
         if dist_list[0] != "DIST" and len(dist_str) != 10:
             raise DIST_STR_INCORRECT
@@ -114,7 +116,8 @@ class Hermes_Client(object):
 
     def parse_demand(self, demand_str):
 
-	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        # TODO: This regex is used frequently, compile it when
+        # there is time to look that up.
         demand_list = re.split('\s+', demand_str)
         if demand_list[0] != "DEMAND" and len(demand_str) != 8:
             raise DEMAND_STR_INCORRECT
@@ -133,7 +136,8 @@ class Hermes_Client(object):
 
     def parse_profit(self, profit_str):
 
-	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        # TODO: This regex is used frequently, compile it when
+        # there is time to look that up.
         profit_list = re.split('\s+', profit_str)
         if profit_list[0] != "PROFIT" and len(profit_str) != 5:
             raise PROFIT_STR_INCORRECT
@@ -148,7 +152,6 @@ class Hermes_Client(object):
         return profit_dict
 
     def parse_config(self, config_str):
-
 
         config_list = re.split('\s+', config_str)
         if config_list[0] != "CONFIG" and len(config_str) != 10:
@@ -196,14 +199,13 @@ class Hermes_Client(object):
 
     def calc_serv_delta(self):
         return {
-            "w_na" : 0,
-            "w_eu" : 0,
-            "w_ap" : 0,
-            "j_na" : 0,
-            "j_eu" : 0,
-            "j_ap" : 0,
-            "d_na" : 0,
-            "d_eu" : 0,
-            "d_ap" : 0
+            "w_na": 0,
+            "w_eu": 0,
+            "w_ap": 0,
+            "j_na": 0,
+            "j_eu": 0,
+            "j_ap": 0,
+            "d_na": 0,
+            "d_eu": 0,
+            "d_ap": 0
         }
-
