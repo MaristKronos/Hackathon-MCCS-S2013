@@ -143,7 +143,6 @@ class Hermes_Client(object):
 
 	#TODO: This regex is used frequently, compile it when there is time to look that up.
         profit_list = re.split('\s+', profit_str)
-	print profit_list
         if profit_list[0] != "PROFIT" and len(profit_str) != 5:
             raise PROFIT_STR_INCORRECT
 
