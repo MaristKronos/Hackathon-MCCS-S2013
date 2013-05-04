@@ -8,6 +8,8 @@ import socket
 
 import re
 
+import collections
+
 
 class INCORRECT_STR(Exception):
     pass
@@ -40,20 +42,10 @@ class CONNECTION_NOT_ACCEPTED(INCORRECT_STR):
 class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
 
-    _con = []
-    _costs = []
-    _config = []
-    _dist = []
-    _profit = []
-    _demand = []
+    _store_the_internet = collections.OrderedDict()
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
-        self._con = []
-        self._costs = []
-        self._config = []
-        self._dist = []
-        self._profit = []
-        self._demand = []
+        self._store_the_internet = collections.OrderedDict()
 
         self._con = socket.create_connection(conn)
         response = self.send_receive(config.BEGIN)
@@ -177,12 +169,17 @@ class Hermes_Client(object):
         return config_dict
 
     def get_stats(self):
-        demand = self.send_receive(config.RECEIVE)
-        self._demand.append(self.parse_demand(demand))
-        dist = self.send_receive(config.RECEIVE)
-        self._dist.append(self.parse_dist(dist))
-        profit = self.send_receive(config.RECEIVE)
-        self._profit.append(self.parse_profit(profit))
+        demand = self.parse_demand(self.send_receive(config.RECEIVE))
+        dist = self.parse_dist(self.send_receive(config.RECEIVE))
+        profit = self.parse_profit(self.send_receive(config.RECEIVE))
+
+        store_the_internet_key = '%(day)s-%(hour)s-%(minute)s-%(second)s' % demand
+        self._store_the_internet[store_the_internet_key] = {
+            'demand': demand,
+            'dist': dist,
+            'profit': profit
+        }
+
         return (demand, dist, profit)
 
     def next_turn(self):
