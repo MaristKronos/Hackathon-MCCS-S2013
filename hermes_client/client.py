@@ -124,12 +124,12 @@ class Hermes_Client(object):
 
         demand_dict = {
             'day': demand_list[1],
-            'hour': demand_list[2],
-            'minute': demand_list[3],
-            'second': demand_list[4],
-            'trades_NA': demand_list[5],
-            'trades_EU': demand_list[6],
-            'trades_AP': demand_list[7],
+            'hour': int(demand_list[2]),
+            'minute': int(demand_list[3]),
+            'second': int(demand_list[4]),
+            'trades_NA': int(demand_list[5]),
+            'trades_EU': int(demand_list[6]),
+            'trades_AP': int(demand_list[7]),
         }
 
         return demand_dict
