@@ -143,10 +143,10 @@ class Hermes_Client(object):
             raise PROFIT_STR_INCORRECT
 
         profit_dict = {
-            'profit_last_period': int profit_list[1],
-            'actual/max_profit_%_last period': int profit_list[2],
-            'total_profit': int profit_list[3],
-            'actual/max_profit_%_total': int profit_list[4],
+            'profit_last_period': int(profit_list[1]),
+            'actual/max_profit_%_last period': int(profit_list[2]),
+            'total_profit': int(profit_list[3]),
+            'actual/max_profit_%_total': int(profit_list[4]),
         }
 
         return profit_dict
