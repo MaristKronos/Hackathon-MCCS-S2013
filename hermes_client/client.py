@@ -11,6 +11,10 @@ class COSTS_STR_TOO_LONG(Exception):
     pass
 
 
+class CONNECTION_NOT_ACCEPTED(Exception):
+    pass
+
+
 class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
 
