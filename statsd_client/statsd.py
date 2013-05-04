@@ -13,10 +13,10 @@ class Statsd(object):
 
     def __init__(
         self,
-        host=config.host,
-        port=config.port,
-        sample_rate=config.sample_rate,
-        disabled=config.disabled
+        host=config.HOST,
+        port=config.PORT,
+        sample_rate=config.SAMPLE_RATE,
+        disabled=config.DISABLED
     ):
         self._statsd = statsd.Connection.set_defaults(
             host,
@@ -27,3 +27,5 @@ class Statsd(object):
 
     def __del__(self):
         self._stastd.close()
+
+x = Statsd()
