@@ -31,7 +31,7 @@ class Hermes_Client(object):
         response = self.send_receive(config.BEGIN)
         if response != 'ACCEPT':
             raise CONNECTION_NOT_ACCEPTED(response)
-        costs_str = self.send_receive(config.START)
+        costs_str = self.send_receive(config.RECEIVE)
         self._costs = self.parse_costs(costs_str)
 
     def __del__(self):
