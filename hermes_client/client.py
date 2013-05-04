@@ -2,12 +2,9 @@
 
 # Our imports
 import config
-
 # Vendor imports
 import socket
-
 import re
-
 import collections
 
 
