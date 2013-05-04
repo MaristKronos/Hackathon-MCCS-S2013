@@ -28,3 +28,18 @@ class Hermes_Client(object):
     def send_receive(self, msg):
         self.send(msg)
         return self.receive()
+
+    def parse_costs(self, cost_str):
+        if len(cost_str) != 4:
+            raise COSTS_STR_TOO_LONG
+
+        costs_list = cost_str.split('')
+
+        costs_dict = {
+            'transaction': costs_list[0],
+            'web': costs_list[1],
+            'java': costs_list[2],
+            'db': costs_list[2],
+        }
+
+        return costs_dict
