@@ -27,6 +27,10 @@ class PROFIT_STR_INCORRECT(INCORRECT_STR):
     pass
 
 
+class CONFIG_STR_INCORRECT(INCORRECT_STR):
+    pass
+
+
 class CONNECTION_NOT_ACCEPTED(INCORRECT_STR):
     pass
 
@@ -128,3 +132,23 @@ class Hermes_Client(object):
         }
 
         return profit_dict
+
+    def parse_config(self, config_str):
+        
+        config_list = config_str.split(' ')
+        if config_list[0] != "CONFIG" and len(config_str) != 10:
+            raise CONFIG_STR_INCORRECT
+
+        config_dict = {
+            'web_NA_total': config_list[1],
+            'web_EU_total': config_list[2],
+            'web_AP_total': config_list[3],
+            'java_NA_total': config_list[4],
+            'java_EU_total': config_list[5],
+            'java_AP_total': config_list[6],
+            'db_NA_total': config_list[7],
+            'db_EU_total': config_list[8],
+            'db_AP_total': config_list[9],
+        }
+
+        return config_dict
