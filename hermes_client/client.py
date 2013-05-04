@@ -42,10 +42,10 @@ class CONNECTION_NOT_ACCEPTED(INCORRECT_STR):
 class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
 
-    _store_the_internet = collections.OrderedDict()
+    _store_the_internet = []
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
-        self._store_the_internet = collections.OrderedDict()
+        self._store_the_internet = []
 
         self._con = socket.create_connection(conn)
         response = self.send_receive(config.BEGIN)
@@ -176,12 +176,11 @@ class Hermes_Client(object):
         dist = self.parse_dist(self.send_receive(config.RECEIVE))
         profit = self.parse_profit(self.send_receive(config.RECEIVE))
 
-        store_the_internet_key = '%(day)s-%(hour)s-%(minute)s-%(second)s' % demand
-        self._store_the_internet[store_the_internet_key] = {
+        self._store_the_internet.append({
             'demand': demand,
             'dist': dist,
             'profit': profit
-        }
+        })
 
         return (demand, dist, profit)
 
