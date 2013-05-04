@@ -150,7 +150,7 @@ class Hermes_Client(object):
         return profit_dict
 
     def parse_config(self, config_str):
-        
+
         config_list = config_str.split(' ')
         if config_list[0] != "CONFIG" and len(config_str) != 10:
             raise CONFIG_STR_INCORRECT
@@ -176,3 +176,6 @@ class Hermes_Client(object):
         _profit = self.send_receive(config.RECEIVE)
 
         return '%s\n%s\n%s\n' % (_demand, _dist, _profit)
+
+    def send_control(self, all_servers):
+        return self.send_receive(config.CONTROL % all_servers)
