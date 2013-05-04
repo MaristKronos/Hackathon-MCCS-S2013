@@ -6,6 +6,8 @@ import config
 # Vendor imports
 import socket
 
+import re
+
 
 class INCORRECT_STR(Exception):
     pass
@@ -81,9 +83,12 @@ class Hermes_Client(object):
         self.send(msg)
         return self.receive()
 
-    def parse_costs(self, costs_str):
+    def parse_costs(self, costs_str):	
 
-        costs_list = costs_str.split(' ')
+	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        costs_list = re.split('\s+', costs_str)
+	print 'costs list'
+	print costs_list
         if costs_list[0] != "COSTS" and len(costs_list) != 5:
             raise COSTS_STR_INCORRECT
 
@@ -98,7 +103,8 @@ class Hermes_Client(object):
 
     def parse_dist(self, dist_str):
 
-        dist_list = dist_str.split(' ')
+	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        dist_list = re.split('\s+', dist_str)
         if dist_list[0] != "DIST" and len(dist_str) != 10:
             raise DIST_STR_INCORRECT
 
@@ -118,7 +124,8 @@ class Hermes_Client(object):
 
     def parse_demand(self, demand_str):
 
-        demand_list = demand_str.split(' ')
+	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        demand_list = re.split('\s+', demand_str)
         if demand_list[0] != "DEMAND" and len(demand_str) != 8:
             raise DEMAND_STR_INCORRECT
 
@@ -136,7 +143,9 @@ class Hermes_Client(object):
 
     def parse_profit(self, profit_str):
 
-        profit_list = profit_str.split(' ')
+	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        profit_list = re.split('\s+', profit_str)
+	print profit_list
         if profit_list[0] != "PROFIT" and len(profit_str) != 5:
             raise PROFIT_STR_INCORRECT
 
@@ -151,7 +160,8 @@ class Hermes_Client(object):
 
     def parse_config(self, config_str):
 
-        config_list = config_str.split(' ')
+	#TODO: This regex is used frequently, compile it when there is time to look that up.
+        config_list = re.split('\s+', config_str)
         if config_list[0] != "CONFIG" and len(config_str) != 10:
             raise CONFIG_STR_INCORRECT
 
