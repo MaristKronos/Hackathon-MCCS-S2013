@@ -168,3 +168,11 @@ class Hermes_Client(object):
         }
 
         return config_dict
+
+    def next_turn(self):
+        self.send_receive('CONTROL 1 1 1 1 1 1 1 1 1')
+        _demand = self.send_receive(config.RECEIVE)
+        _dist = self.send_receive(config.RECEIVE)
+        _profit = self.send_receive(config.RECEIVE)
+
+        return '%s\n%s\n%s\n' % (_demand, _dist, _profit)
