@@ -23,6 +23,17 @@ class Hermes_Client(object):
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
         self._con = socket.create_connection(conn)
+        response = self.send_receive(config.BEGIN)
+        if response != 'ACCEPT':
+            raise CONNECTION_NOT_ACCEPTED(response)
+        costs_str = self.send_receive(config.START)
+        self._costs = self.parse_costs(costs_str)
+
+    def __del__(self):
+        """Once our instance ends, we want to ensure a good disconnect"""
+        self._con.send(config.STOP)
+        self._con.shutdown(socket.SHUT_RDWR)
+        self._con.close()
 
     def send(self, msg):
         self._con.send(msg)
