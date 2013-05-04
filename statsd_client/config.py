@@ -1,4 +1,3 @@
-host = '/dev/null'
-port = 8125
-sample_rate = 1
-disabled = False
+HOST = 'carbon.hostedgraphite.com'
+PORT = 2003
+ENC_KEY = ''
