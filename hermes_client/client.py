@@ -38,14 +38,21 @@ class CONNECTION_NOT_ACCEPTED(INCORRECT_STR):
 class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
 
-    _con = None
-    _costs = None
-    _config = None
-    _dist = None
-    _profit = None
-    _demand = None
+    _con = []
+    _costs = []
+    _config = []
+    _dist = []
+    _profit = []
+    _demand = []
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
+        self._con = []
+        self._costs = []
+        self._config = []
+        self._dist = []
+        self._profit = []
+        self._demand = []
+
         self._con = socket.create_connection(conn)
         response = self.send_receive(config.BEGIN)
         if response != 'ACCEPT':
@@ -55,15 +62,8 @@ class Hermes_Client(object):
 
         _config = self.send_receive(config.START)
         self._config = self.parse_config(_config)
-        #
-        _demand = self.send_receive(config.RECEIVE)
-        self._demand = self.parse_demand(_demand)
-        #
-        _dist = self.send_receive(config.RECEIVE)
-        self._dist = self.parse_dist(_dist)
-        #
-        _profit = self.send_receive(config.RECEIVE)
-        self._profit = self.parse_profit(_profit)
+
+        self.get_stats()
 
     def __del__(self):
         """Once our instance ends, we want to ensure a good disconnect"""
@@ -169,13 +169,23 @@ class Hermes_Client(object):
 
         return config_dict
 
-    def next_turn(self):
-        self.send_receive('CONTROL 1 1 1 1 1 1 1 1 1')
-        _demand = self.send_receive(config.RECEIVE)
-        _dist = self.send_receive(config.RECEIVE)
-        _profit = self.send_receive(config.RECEIVE)
+    def get_stats(self):
+        demand = self.send_receive(config.RECEIVE)
+        self._demand.append(self.parse_demand(demand))
+        dist = self.send_receive(config.RECEIVE)
+        self._dist.append(self.parse_dist(dist))
+        profit = self.send_receive(config.RECEIVE)
+        self._profit.append(self.parse_profit(profit))
+        return (demand, dist, profit)
 
-        return '%s\n%s\n%s\n' % (_demand, _dist, _profit)
+    def next_turn(self):
+        maybe_end = self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
+        if maybe_end == 'END':
+            self.send_receive(config.STOP)
+            return False
+        else:
+            self._config = self.parse_config(maybe_end)
+            return True
 
     def send_control(self, all_servers):
         return self.send_receive(config.CONTROL % all_servers)
