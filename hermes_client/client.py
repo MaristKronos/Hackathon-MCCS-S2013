@@ -94,7 +94,7 @@ class Hermes_Client(object):
             'AP db': dist_list[9],
         }
 
-        return dist_list
+        return dist_dict
 
     def parse_demand(self, demand_str):
 
