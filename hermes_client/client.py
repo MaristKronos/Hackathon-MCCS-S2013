@@ -84,10 +84,10 @@ class Hermes_Client(object):
             raise COSTS_STR_INCORRECT
 
         costs_dict = {
-            'transaction': costs_list[1],
-            'web': costs_list[2],
-            'java': costs_list[3],
-            'db': costs_list[4],
+            'transaction': int(costs_list[1]),
+            'web': int(costs_list[2]),
+            'java': int(costs_list[3]),
+            'db': int(costs_list[4]),
         }
 
         return costs_dict
@@ -101,15 +101,15 @@ class Hermes_Client(object):
             raise DIST_STR_INCORRECT
 
         dist_dict = {
-            'NA_web': dist_list[1],
-            'EU_web': dist_list[2],
-            'AP_web': dist_list[3],
-            'NA_java': dist_list[4],
-            'EU_java': dist_list[5],
-            'AP_java': dist_list[6],
-            'NA_db': dist_list[7],
-            'EU_db': dist_list[8],
-            'AP_db': dist_list[9],
+            'NA_web': int(dist_list[1]),
+            'EU_web': int(dist_list[2]),
+            'AP_web': int(dist_list[3]),
+            'NA_java': int(dist_list[4]),
+            'EU_java': int(dist_list[5]),
+            'AP_java': int(dist_list[6]),
+            'NA_db': int(dist_list[7]),
+            'EU_db': int(dist_list[8]),
+            'AP_db': int(dist_list[9]),
         }
 
         return dist_dict
@@ -143,10 +143,10 @@ class Hermes_Client(object):
             raise PROFIT_STR_INCORRECT
 
         profit_dict = {
-            'profit_last_period': profit_list[1],
-            'actual/max_profit_%_last period': profit_list[2],
-            'total_profit': profit_list[3],
-            'actual/max_profit_%_total': profit_list[4],
+            'profit_last_period': int profit_list[1],
+            'actual/max_profit_%_last period': int profit_list[2],
+            'total_profit': int profit_list[3],
+            'actual/max_profit_%_total': int profit_list[4],
         }
 
         return profit_dict
@@ -158,15 +158,15 @@ class Hermes_Client(object):
             raise CONFIG_STR_INCORRECT
 
         config_dict = {
-            'web_NA_total': config_list[1],
-            'web_EU_total': config_list[2],
-            'web_AP_total': config_list[3],
-            'java_NA_total': config_list[4],
-            'java_EU_total': config_list[5],
-            'java_AP_total': config_list[6],
-            'db_NA_total': config_list[7],
-            'db_EU_total': config_list[8],
-            'db_AP_total': config_list[9],
+            'web_NA_total': int(config_list[1]),
+            'web_EU_total': int(config_list[2]),
+            'web_AP_total': int(config_list[3]),
+            'java_NA_total': int(config_list[4]),
+            'java_EU_total': int(config_list[5]),
+            'java_AP_total': int(config_list[6]),
+            'db_NA_total': int(config_list[7]),
+            'db_EU_total': int(config_list[8]),
+            'db_AP_total': int(config_list[9]),
         }
 
         return config_dict
