@@ -4,7 +4,7 @@
 import config
 
 # Vendor imports
-import statsd
+import statsd-client
 
 
 class Statsd(object):
