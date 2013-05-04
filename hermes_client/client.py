@@ -87,8 +87,6 @@ class Hermes_Client(object):
 
 	#TODO: This regex is used frequently, compile it when there is time to look that up.
         costs_list = re.split('\s+', costs_str)
-	print 'costs list'
-	print costs_list
         if costs_list[0] != "COSTS" and len(costs_list) != 5:
             raise COSTS_STR_INCORRECT
 
@@ -160,7 +158,7 @@ class Hermes_Client(object):
 
     def parse_config(self, config_str):
 
-	#TODO: This regex is used frequently, compile it when there is time to look that up.
+
         config_list = re.split('\s+', config_str)
         if config_list[0] != "CONFIG" and len(config_str) != 10:
             raise CONFIG_STR_INCORRECT
@@ -189,7 +187,7 @@ class Hermes_Client(object):
         return (demand, dist, profit)
 
     def next_turn(self):
-        maybe_end = self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
+        maybe_end = self.send_control(self.calc_serv_delta())
         if maybe_end == 'END':
             self.send_receive(config.STOP)
             return False
@@ -199,3 +197,17 @@ class Hermes_Client(object):
 
     def send_control(self, all_servers):
         return self.send_receive(config.CONTROL % all_servers)
+
+    def calc_serv_delta(self):
+        return {
+            "w_na" : 0,
+            "w_eu" : 0,
+            "w_ap" : 0,
+            "j_na" : 0,
+            "j_eu" : 0,
+            "j_ap" : 0,
+            "d_na" : 0,
+            "d_eu" : 0,
+            "d_ap" : 0
+        }
+
