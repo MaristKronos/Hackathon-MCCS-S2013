@@ -7,9 +7,14 @@ import config
 import socket
 
 
-class COSTS_STR_TOO_LONG(Exception):
+class COSTS_STR_INCORRECT(Exception):
     pass
 
+class DIST_STR_INCORRECT(Exception):
+    pass
+
+class DEMAND_STR_INCORRECT(Exception):
+    pass
 
 class Hermes_Client(object):
     """Our direct client that talks to Hermes"""
@@ -30,16 +35,54 @@ class Hermes_Client(object):
         return self.receive()
 
     def parse_costs(self, cost_str):
-        if len(cost_str) != 4:
-            raise COSTS_STR_TOO_LONG
 
         costs_list = cost_str.split('')
+        if costs_list[0] != "COSTS" and len(cost_list) != 5:
+             raise COSTS_STR_INCORRECT
 
         costs_dict = {
-            'transaction': costs_list[0],
-            'web': costs_list[1],
-            'java': costs_list[2],
-            'db': costs_list[2],
+            'transaction': costs_list[1],
+            'web'        : costs_list[2],
+            'java'       : costs_list[3],
+            'db'         : costs_list[4],
         }
 
         return costs_dict
+
+    def parse_dist(self, dist_str):
+
+	dist_list = dist_str.split('')
+	if dist_list[0] != "DIST" and len(dist_str) != 10:
+	     raise DIST_STR_INCORRECT
+
+        dist_dict = {
+            'NA web'  : dist_list[1],
+            'EU web'  : dist_list[2],
+            'AP web'  : dist_list[3],
+            'NA java' : dist_list[4],
+            'EU java' : dist_list[5],
+            'AP java' : dist_list[6],
+            'NA db'   : dist_list[7],
+            'EU db'   : dist_list[8],
+            'AP db'   : dist_list[9],
+        }
+
+        return dist_list
+
+    def parse_demand(self, demand_str):
+
+        demand_list = demand_str.split('')
+        if demand_list[0] != "DEMAND" and len(demand_str) != 8:
+            raise DEMAND_STR_INCORRECT
+
+        demand_dict = {
+            'Day' : demand_list[1],
+            'Hour' : demand_list[2],
+            'Minute' : demand_list[3],
+            'Second' : demand_list[4],
+            'Trades_NA' : demand_list[5],
+            'Trades_EU' : demand_list[6],
+            'Trades_AP' : demand_list[7],
+        }
+
+        return demand_list
