@@ -168,3 +168,7 @@ class Hermes_Client(object):
         }
 
         return config_dict
+
+    def send_control(self, all_servers):
+
+        return send_receive(config.CONTROL % all_servers)
