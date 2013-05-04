@@ -83,15 +83,15 @@ class Hermes_Client(object):
             raise DIST_STR_INCORRECT
 
         dist_dict = {
-            'NA web': dist_list[1],
-            'EU web': dist_list[2],
-            'AP web': dist_list[3],
-            'NA java': dist_list[4],
-            'EU java': dist_list[5],
-            'AP java': dist_list[6],
-            'NA db': dist_list[7],
-            'EU db': dist_list[8],
-            'AP db': dist_list[9],
+            'NA_web': dist_list[1],
+            'EU_web': dist_list[2],
+            'AP_web': dist_list[3],
+            'NA_java': dist_list[4],
+            'EU_java': dist_list[5],
+            'AP_java': dist_list[6],
+            'NA_db': dist_list[7],
+            'EU_db': dist_list[8],
+            'AP_db': dist_list[9],
         }
 
         return dist_dict
@@ -103,13 +103,13 @@ class Hermes_Client(object):
             raise DEMAND_STR_INCORRECT
 
         demand_dict = {
-            'Day': demand_list[1],
-            'Hour': demand_list[2],
-            'Minute': demand_list[3],
-            'Second': demand_list[4],
-            'Trades_NA': demand_list[5],
-            'Trades_EU': demand_list[6],
-            'Trades_AP': demand_list[7],
+            'day': demand_list[1],
+            'hour': demand_list[2],
+            'minute': demand_list[3],
+            'second': demand_list[4],
+            'trades_NA': demand_list[5],
+            'trades_EU': demand_list[6],
+            'trades_AP': demand_list[7],
         }
 
         return demand_dict
