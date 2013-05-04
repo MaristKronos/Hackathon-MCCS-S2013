@@ -69,9 +69,9 @@ class Hermes_Client(object):
 
         costs_dict = {
             'transaction': costs_list[1],
-            'web'        : costs_list[2],
-            'java'       : costs_list[3],
-            'db'         : costs_list[4],
+            'web': costs_list[2],
+            'java': costs_list[3],
+            'db': costs_list[4],
         }
 
         return costs_dict
@@ -83,15 +83,15 @@ class Hermes_Client(object):
             raise DIST_STR_INCORRECT
 
         dist_dict = {
-            'NA web'  : dist_list[1],
-            'EU web'  : dist_list[2],
-            'AP web'  : dist_list[3],
-            'NA java' : dist_list[4],
-            'EU java' : dist_list[5],
-            'AP java' : dist_list[6],
-            'NA db'   : dist_list[7],
-            'EU db'   : dist_list[8],
-            'AP db'   : dist_list[9],
+            'NA web': dist_list[1],
+            'EU web': dist_list[2],
+            'AP web': dist_list[3],
+            'NA java': dist_list[4],
+            'EU java': dist_list[5],
+            'AP java': dist_list[6],
+            'NA db': dist_list[7],
+            'EU db': dist_list[8],
+            'AP db': dist_list[9],
         }
 
         return dist_list
@@ -103,13 +103,13 @@ class Hermes_Client(object):
             raise DEMAND_STR_INCORRECT
 
         demand_dict = {
-            'Day'       : demand_list[1],
-            'Hour'      : demand_list[2],
-            'Minute'    : demand_list[3],
-            'Second'    : demand_list[4],
-            'Trades_NA' : demand_list[5],
-            'Trades_EU' : demand_list[6],
-            'Trades_AP' : demand_list[7],
+            'Day': demand_list[1],
+            'Hour': demand_list[2],
+            'Minute': demand_list[3],
+            'Second': demand_list[4],
+            'Trades_NA': demand_list[5],
+            'Trades_EU': demand_list[6],
+            'Trades_AP': demand_list[7],
         }
 
         return demand_dict
@@ -121,10 +121,10 @@ class Hermes_Client(object):
             raise PROFIT_STR_INCORRECT
 
         profit_dict = {
-            'profit_last_period'              : profit_list[1],
-            'actual/max_profit_%_last period' : profit_list[2],
-            'total_profit'                    : profit_list[3],
-            'actual/max_profit_%_total'       : profit_list[4],
+            'profit_last_period': profit_list[1],
+            'actual/max_profit_%_last period': profit_list[2],
+            'total_profit': profit_list[3],
+            'actual/max_profit_%_total': profit_list[4],
         }
 
         return profit_dict
