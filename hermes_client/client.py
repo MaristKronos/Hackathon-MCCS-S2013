@@ -16,6 +16,9 @@ class DIST_STR_INCORRECT(Exception):
 class DEMAND_STR_INCORRECT(Exception):
     pass
 
+class PROFIT_STR_INCORRECT(Exception):
+    pass
+
 class CONNECTION_NOT_ACCEPTED(Exception):
     pass
 
@@ -50,10 +53,10 @@ class Hermes_Client(object):
         self.send(msg)
         return self.receive()
 
-    def parse_costs(self, cost_str):
+    def parse_costs(self, costs_str):
 
-        costs_list = cost_str.split('')
-        if costs_list[0] != "COSTS" and len(cost_list) != 5:
+        costs_list = costs_str.split(' ')
+        if costs_list[0] != "COSTS" and len(costs_list) != 5:
              raise COSTS_STR_INCORRECT
 
         costs_dict = {
@@ -67,7 +70,7 @@ class Hermes_Client(object):
 
     def parse_dist(self, dist_str):
 
-	dist_list = dist_str.split('')
+	dist_list = dist_str.split(' ')
 	if dist_list[0] != "DIST" and len(dist_str) != 10:
 	     raise DIST_STR_INCORRECT
 
@@ -87,18 +90,33 @@ class Hermes_Client(object):
 
     def parse_demand(self, demand_str):
 
-        demand_list = demand_str.split('')
+        demand_list = demand_str.split(' ')
         if demand_list[0] != "DEMAND" and len(demand_str) != 8:
             raise DEMAND_STR_INCORRECT
 
         demand_dict = {
-            'Day' : demand_list[1],
-            'Hour' : demand_list[2],
-            'Minute' : demand_list[3],
-            'Second' : demand_list[4],
+            'Day'       : demand_list[1],
+            'Hour'      : demand_list[2],
+            'Minute'    : demand_list[3],
+            'Second'    : demand_list[4],
             'Trades_NA' : demand_list[5],
             'Trades_EU' : demand_list[6],
             'Trades_AP' : demand_list[7],
         }
 
-        return demand_list
+        return demand_dict
+
+    def parse_profit(self, profit_str):
+
+        profit_list = profit_str.split(' ')
+        if profit_list[0] != "PROFIT" and len(profit_str) != 5:
+            raise PROFIT_STR_INCORRECT
+
+        profit_dict = {
+            'profit_last_period'              : profit_list[1],
+            'actual/max_profit_%_last period' : profit_list[2],
+            'total_profit'                    : profit_list[3],
+            'actual/max_profit_%_total'       : profit_list[4],
+        }
+
+        return profit_dict
