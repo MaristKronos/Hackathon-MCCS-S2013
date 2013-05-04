@@ -40,6 +40,10 @@ class Hermes_Client(object):
 
     _con = None
     _costs = None
+    _config = None
+    _dist = None
+    _profit = None
+    _demand = None
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
         self._con = socket.create_connection(conn)
@@ -48,6 +52,18 @@ class Hermes_Client(object):
             raise CONNECTION_NOT_ACCEPTED(response)
         costs_str = self.send_receive(config.RECEIVE)
         self._costs = self.parse_costs(costs_str)
+
+        _config = self.send_receive(config.START)
+        self._config = self.parse_config(_config)
+        #
+        _demand = self.send_receive(config.RECEIVE)
+        self._demand = self.parse_demand(_demand)
+        #
+        _dist = self.send_receive(config.RECEIVE)
+        self._dist = self.parse_dist(_dist)
+        #
+        _profit = self.send_receive(config.RECEIVE)
+        self._profit = self.parse_profit(_profit)
 
     def __del__(self):
         """Once our instance ends, we want to ensure a good disconnect"""
