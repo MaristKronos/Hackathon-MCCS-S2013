@@ -65,7 +65,7 @@ class Hermes_Client(object):
 
         costs_list = costs_str.split(' ')
         if costs_list[0] != "COSTS" and len(costs_list) != 5:
-             raise COSTS_STR_INCORRECT
+            raise COSTS_STR_INCORRECT
 
         costs_dict = {
             'transaction': costs_list[1],
@@ -78,9 +78,9 @@ class Hermes_Client(object):
 
     def parse_dist(self, dist_str):
 
-	dist_list = dist_str.split(' ')
-	if dist_list[0] != "DIST" and len(dist_str) != 10:
-	     raise DIST_STR_INCORRECT
+        dist_list = dist_str.split(' ')
+        if dist_list[0] != "DIST" and len(dist_str) != 10:
+            raise DIST_STR_INCORRECT
 
         dist_dict = {
             'NA web'  : dist_list[1],
