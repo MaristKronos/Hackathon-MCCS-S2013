@@ -32,15 +32,15 @@ class Algorithm(object):
     def calc_delta(self, avg_list):
         # Calculates averages changes of demand over 5 minute period by region
         delta_list = []
-        for i in range (0, (len(avg_list)) - 1): 
+        for i in range (0, (len(avg_list)) - 1): # May have to change to -2 to avoid outOfBounds error
             curr = avg_list[i]
-            fol  = avg_list[i+1]
+            fol = avg_list[i+1]
 
             if (fol == null)
                 return
 
             else
-                delta_avgs = {
+                delta_diffs = {
 
                    'NA_delta': (fol['NA_avg'] - curr['NA_avg'])
                    'EU_delta': (fol['EU_avg'] - curr['EU_avg'])
@@ -48,6 +48,29 @@ class Algorithm(object):
 
                 }
 
-            delta_list = delta_list.append(delta_avgs)
+            delta_list = delta_list.append(delta_diffs)
 
         return delta_list
+
+    def calc_deltasq(self, change_list):
+        # Calculate averages of change of change of demand over 5 minute period by region
+        deltasq_list = []
+        for j in range(0, (len(change_list)) - 1): # May have to change to -2 to avoid outOfBounds error
+            curr = change_list[1]
+            fol = change_list[i+1]
+
+            if (fol == null)
+                return
+
+            else
+                deltasq_diffs = {
+
+                    'NA_deltasq': (fol['NA_delta'] - curr['NA_delta'])
+                    'EU_deltasq': (fol['EU_delta'] - curr['EU_delta'])
+                    'AP_deltasq': (fol['AP_delta'] - curr['AP_delta'])
+
+                }
+
+            deltasq_list = deltasq_list.append(deltasq_diffs)
+
+        return deltasq_list
