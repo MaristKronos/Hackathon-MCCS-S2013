@@ -1,0 +1,2 @@
+statsd-client==1.0.4
+wsgiref==0.1.2
