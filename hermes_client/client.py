@@ -202,13 +202,13 @@ class Hermes_Client(object):
             self._week_demand_history[currTime % datapoint['demand']] = {
                 'eu': eu_sum,
                 'na': na_sum,
-                'ap': ap_sum
+                'ap': ap_sum,
             }
         elif self._turns % self.wdtg == 0:
             eu_sum = 0
             na_sum = 0
             ap_sum = 0
-            lst = self._store_the_internet[-self.wdtg:]
+        lst = self._store_the_internet[-self.wdtg:]
         for x in lst:
             eu_sum += x['demand']['trades_EU']
             na_sum += x['demand']['trades_NA']
@@ -250,17 +250,60 @@ class Hermes_Client(object):
             "d_ap": 0
         }
 
+    def sub_day(self, myday):
+        days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+        day_index = days.index(myday) - 1
+        if day_index < 0 or day_index >= len(days):
+            day_index = 6
+
+        return days[day_index]
+
+    def add_day(self, myday):
+        days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+        day_index = days.index(myday) + 1
+        if day_index < 0 or day_index >= len(days):
+            day_index = 0
+
+        return days[day_index]
+
     def hist_predict(self):
         # TODO: refine to ignore SAT and SUN, if SAT or SUN, instead
         # return another day like friday!
+        returnval = None
+
         demand = self._store_the_internet[-1]['demand']
         if demand['day'] == 'SAT' or demand['day'] == 'SUN':
             return 0  # special case we will worry about later
 
-        almost_current_time = reversed(self._week_demand_history).next()
-        old_history = reversed(self._store_the_internet)
-        index = -1
+        almost_current_time = reversed(
+            self._week_demand_history
+        ).next().split(' ')
 
-        for i in old_history:
-            if i['demand']['hour'] == almost_current_time['hour']:
-                pass
+        day = almost_current_time[0]
+        hour = almost_current_time[1]
+        minute = almost_current_time[2]
+        second = almost_current_time[3]
+
+        if minute == 0:
+            return 0
+        elif minute < 15:
+            return 15
+        elif minute < 30:
+            return 30
+        elif minute < 45:
+            return 45
+        else:
+            if hour == 23:
+                day = self.add_day(day)
+                hour = 0
+            else:
+                hour += 1
+            return 0
+
+        try:
+            returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
+        except:
+            day = self.sub_day(day)
+            returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
+
+        return returnval

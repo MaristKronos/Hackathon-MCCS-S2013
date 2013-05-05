@@ -5,7 +5,7 @@ import re
 import collections
 
 class Algorithm(object):
-    
+
     def take_from_list(self, data_list, amount):
         # Function to take variable number of elements of a list
         out_list = data_list[amount:]
@@ -33,10 +33,10 @@ class Algorithm(object):
             curr = avg_list[i]
             fol = avg_list[i+1]
 
-            if (fol == null)
+            if (fol == null):
                 return
 
-            else
+            else:
                 delta_diffs = {
 
                    'NA_delta': (fol['NA_avg'] - curr['NA_avg']),
@@ -57,10 +57,10 @@ class Algorithm(object):
             curr = change_list[1]
             fol = change_list[i+1]
 
-            if (fol == null)
+            if (fol == null):
                 return
 
-            else
+            else:
                 deltapr_diffs = {
 
                     'NA_deltapr': (fol['NA_delta'] - curr['NA_delta']),
