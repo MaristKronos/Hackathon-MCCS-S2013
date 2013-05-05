@@ -240,6 +240,19 @@ class Hermes_Client(object):
             "d_eu": 0,
             "d_ap": 0
         }
-    #def hist_predict(self):
+    def hist_predict(self):
+        #TODO: refine to ignore SAT and SUN, if SAT or SUN, instead return another day like friday!
+        demand = self._store_the_internet[-1]['demand']
+        if demand['day'] == 'SAT' or demand['day'] == 'SUN':
+            return 0  # special case we will worry about later
+
+        }        
+        almost_current_time = reversed(self._week_demand_history).next()
+        old_history = reversed(self._store_the_internet)
+        index = -1
+
+        for i in old_history:
+            if i['demand']['hour'] == almost_current_time['hour'
+
     	
 
