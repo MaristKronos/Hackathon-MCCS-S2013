@@ -2,6 +2,7 @@
 
 # Our imports
 import config
+import seed
 # Vendor imports
 import socket
 import re
@@ -44,7 +45,7 @@ class Hermes_Client(object):
 
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
         self._store_the_internet = []
-        self._week_demand_history = {}
+        self._week_demand_history = seed.seed
         self._turns = 0
 
         self._con = socket.create_connection(conn)
