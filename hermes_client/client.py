@@ -121,9 +121,11 @@ class Hermes_Client(object):
 
         # TODO: This regex is used frequently, compile it when
         # there is time to look that up.
+        print demand_str
         demand_list = re.split('\s+', demand_str)
+        print demand_list
         if demand_list[0] != "DEMAND" and len(demand_str) != 8:
-            raise DEMAND_STR_INCORRECT
+            raise DEMAND_STR_INCORRECT(demand_str)
 
         demand_dict = {
             'day': demand_list[1],
@@ -230,7 +232,6 @@ class Hermes_Client(object):
             self.send_receive(config.STOP)
             return False
         else:
-            self._config = self.parse_config(maybe_end)
             #Increment the turn counter.
             self._turns += 1
             return True
@@ -240,8 +241,8 @@ class Hermes_Client(object):
         # Rate of change results
         if not len(self._store_the_internet) % 8:
             roc = algorithm.handle_data_input(self._store_the_internet)
-            result = output_algorithm.demand(self._config, self.hist_predict(), 0, self._store_the_internet[-1]['demand'], 1, roc, 0)
-            self._config = get_our_config(result)
+            result = output_algorithm.demand(self._config, self.hist_predict(), .75, self._store_the_internet[-1]['demand'], 1, roc, 0)
+            self._config = self.get_our_config(result)
             return self.send_receive(config.CONTROL % result)
         return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
@@ -286,7 +287,9 @@ class Hermes_Client(object):
 
     def get_our_config(self, control_dict):
 
-        return determine_true_config(parse_control_to_config(control_dict))
+        new_config = self.determine_true_config(self.parse_control_to_config(control_dict))
+        
+        return new_config
 
 
     def calc_serv_delta(self):
