@@ -121,9 +121,7 @@ class Hermes_Client(object):
 
         # TODO: This regex is used frequently, compile it when
         # there is time to look that up.
-        print demand_str
         demand_list = re.split('\s+', demand_str)
-        print demand_list
         if demand_list[0] != "DEMAND" and len(demand_str) != 8:
             raise DEMAND_STR_INCORRECT(demand_str)
 
@@ -187,6 +185,10 @@ class Hermes_Client(object):
         demand = self.parse_demand(self.send_receive(config.RECEIVE))
         dist = self.parse_dist(self.send_receive(config.RECEIVE))
         profit = self.parse_profit(self.send_receive(config.RECEIVE))
+        
+        print demand
+        print profit
+        print self._config
 
         self._store_the_internet.append({
             'demand': demand,

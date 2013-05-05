@@ -29,9 +29,9 @@ def adjust(hist,demand,roc):
 
     hist_err = 1 - ((hist_sum - demand_sum) / demand_sum)
     roc_err = 1 - ((roc_sum - demand_sum) / demand_sum)
-    print "errors rates"
-    print hist_err
-    print roc_err
+    #print "errors rates"
+    #print hist_err
+    #print roc_err
 
     
 

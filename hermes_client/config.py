@@ -1,5 +1,5 @@
 CONNECTION_TUPLES = [
-    ('hackathon.hopto.org', 31671),
+    ('hackathon.hopto.org', 31672),
     ('hackathon.hopto.org', 31672),
 ]
 
