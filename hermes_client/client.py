@@ -3,6 +3,8 @@
 # Our imports
 import config
 import seed
+import algorithm
+import output_algorithm
 # Vendor imports
 import socket
 import re
@@ -156,7 +158,7 @@ class Hermes_Client(object):
 
         config_list = re.split('\s+', config_str)
         if config_list[0] != "CONFIG" and len(config_str) != 10:
-            raise CONFIG_STR_INCORRECT
+            raise CONFIG_STR_INCORRECT(config_str)
 
         config_dict = {
             'web_NA_total': int(config_list[1]),
@@ -174,7 +176,7 @@ class Hermes_Client(object):
 
     def get_stats(self):
         #set the week demand turn granularity(wdtg)
-        self.wdtg = 30
+        self.wdtg = 16
         eu_sum = 0
         na_sum = 0
         ap_sum = 0
@@ -220,14 +222,12 @@ class Hermes_Client(object):
             'na': na_sum/self.wdtg,
             'ap': ap_sum/self.wdtg
         }
-
         return (demand, dist, profit)
 
     def next_turn(self):
         maybe_end = self.send_control(self.calc_serv_delta())
         if maybe_end == 'END':
             self.send_receive(config.STOP)
-            print self._week_demand_history
             return False
         else:
             self._config = self.parse_config(maybe_end)
@@ -236,7 +236,13 @@ class Hermes_Client(object):
             return True
 
     def send_control(self, all_servers):
-        return self.send_receive(config.CONTROL % all_servers)
+        # TODO, first 1 should change based on day of the week [sat, sun]
+        # Rate of change results
+        if not len(self._store_the_internet) % 8:
+            roc = algorithm.handle_data_input(self._store_the_internet)
+            result = output_algorithm.demand(self._config, self.hist_predict(), 0, self._store_the_internet[-1]['demand'], 1, roc, 0)
+            return self.send_receive(config.CONTROL % result)
+        return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
     def calc_serv_delta(self):
         return {
@@ -281,25 +287,32 @@ class Hermes_Client(object):
         ).next().split(' ')
 
         day = almost_current_time[0]
-        hour = almost_current_time[1]
-        minute = almost_current_time[2]
-        second = almost_current_time[3]
+        hour = int(almost_current_time[1])
+        minute = int(almost_current_time[2])
+        second = int(almost_current_time[3])
 
         if minute == 0:
             return 0
+        elif minute < 7.5:
+            return 7.5
         elif minute < 15:
             return 15
+        elif minute < 22.5:
+            return 22.5
         elif minute < 30:
             return 30
+        elif minute < 37.5:
+            return 37.5
         elif minute < 45:
             return 45
+        elif minute < 52.5:
+            return 52.5
         else:
             if hour == 23:
                 day = self.add_day(day)
                 hour = 0
             else:
                 hour += 1
-            return 0
 
         try:
             returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
