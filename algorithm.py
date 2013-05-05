@@ -1,5 +1,5 @@
 # File containing the beginning stages of our algorithm code-5 minute blocks
-import config
+# import config
 import socket
 import re
 import collections
@@ -97,11 +97,11 @@ def predict_demand(dem_list, d_list, dpr_list):
 
     time_interval = 10
 
-    NA_predict = ((sum([x['NA_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['NA_delta'] for x in dp_list]) / len(dp_list)) * time_interval) + ((dem_list[0])['NA_avg'])
+    NA_predict = ((sum([x['NA_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['NA_delta'] for x in d_list]) / len(d_list)) * time_interval) + ((dem_list[0])['NA_avg'])
 
-    EU_predict = ((sum([x['EU_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['EU_delta'] for x in dp_list]) / len(dp_list)) * time_interval) + ((dem_list[0])['EU_avg'])
+    EU_predict = ((sum([x['EU_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['EU_delta'] for x in d_list]) / len(d_list)) * time_interval) + ((dem_list[0])['EU_avg'])
 
-    AP_predict = ((sum([x['AP_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['AP_delta'] for x in dp_list]) / len(dp_list)) * time_interval) + ((dem_list[0])['AP_avg'])
+    AP_predict = ((sum([x['AP_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['AP_delta'] for x in d_list]) / len(d_list)) * time_interval) + ((dem_list[0])['AP_avg'])
 
 
     prediction_dict = {
