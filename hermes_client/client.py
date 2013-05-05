@@ -241,8 +241,11 @@ class Hermes_Client(object):
         # Rate of change results
         if not len(self._store_the_internet) % 8:
             roc = algorithm.handle_data_input(self._store_the_internet)
-            result = output_algorithm.demand(self._config, self.hist_predict(), .75, self._store_the_internet[-1]['demand'], 1, roc, 0)
+            hist = self.hist_predict()
+            result = output_algorithm.demand(self._config, hist, self._store_the_internet[-1]['demand'], roc)
             self._config = self.get_our_config(result)
+            #before returning, check our gueses 
+            output_algorithm.adjust(hist, self._store_the_internet[-1]['demand'], roc)
             return self.send_receive(config.CONTROL % result)
         return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
@@ -259,7 +262,6 @@ class Hermes_Client(object):
             'db_NA_total': control_data['d_na'],
             'db_EU_total': control_data['d_eu'],
             'db_AP_total': control_data['d_ap'],
-
 
         }
 
