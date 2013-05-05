@@ -222,6 +222,7 @@ class Hermes_Client(object):
             'na': na_sum/self.wdtg,
             'ap': ap_sum/self.wdtg
         }
+        print (demand, dist, profit)
 
         return (demand, dist, profit)
 
@@ -239,10 +240,9 @@ class Hermes_Client(object):
     def send_control(self, all_servers):
         # TODO, first 1 should change based on day of the week [sat, sun]
         # Rate of change results
-        #roc = algorithm.amazing(self._store_the_internet)
         if not len(self._store_the_internet) % 8:
-            roc = self._store_the_internet[-1]['demand']
-            result = output_algorithm.demand(self._config, self.hist_predict(), 1, self._store_the_internet[-1]['demand'], 1, roc, 0)
+            roc = algorithm.handle_data_input(self._store_the_internet)
+            result = output_algorithm.demand(self._config, self.hist_predict(), 1, self._store_the_internet[-1]['demand'], 1, roc, 1)
             return self.send_receive(config.CONTROL % result)
         return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 

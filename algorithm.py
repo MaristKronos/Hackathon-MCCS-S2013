@@ -4,100 +4,113 @@ import socket
 import re
 import collections
 
-class Algorithm(object):
+accum_list = []
 
-    def take_from_list(self, data_list, amount):
-        # Function to take variable number of elements of a list
-        out_list = data_list[:amount]
+def take_from_list(data_list, amount):
+    # Function to take variable number of elements of a list
+    out_list = data_list[:amount]
 
-        return out_list
+    return out_list
 
-    def handle_data_input(self, full_data_list):
-        
-         avgs = calc_avgs (take_from_list (full_data_list, 10))
-         deltas = calc_delta(avgs)
-         deltaprs = calc_deltapr(deltas)
+def handle_data_input(full_data_list):
 
-         predict_demand(avgs, deltas, deltaprs)
+     accum_list = []
 
-    def calc_avgs(self, data_list):
-        # Calculates averages of demand over 5 minute period by region
-        five_min_avg_NA = (sum([x['demand']['trades_NA'] for x in [data_list]]) / len(data_list))
-        five_min_avg_EU = (sum([x['demand']['trades_EU'] for x in [data_list]]) / len(data_list))
-        five_min_avg_AP = (sum([x['demand']['trades_AP'] for x in [data_list]]) / len(data_list))
+     avgs = calc_avgs(take_from_list(full_data_list, 10))
 
-        current_demand_avgs = {
-            'NA_avg': five_min_avg_NA,
-            'EU_avg': five_min_avg_EU,
-            'AP_avg': five_min_avg_AP,
-        }
+     if len(avgs) < 2:
+        avgs.append(avgs[0])
 
-        accum_list = accum_list.append(current_demand_avgs)
+     deltas = calc_delta(avgs)
+     if len(deltas) < 2:
+        deltas.append(deltas[0])
 
-        return accum_list
+     deltaprs = calc_deltapr(deltas)
 
-    def calc_delta(self, avg_list):
-        # Calculates averages changes of demand over 5 minute period by region
-        delta_list = []
-        for i in range (0, (len(avg_list)) - 1): # May have to change to -2 to avoid outOfBounds error
-            curr = avg_list[i]
-            fol = avg_list[i+1]
+     return predict_demand(avgs, deltas, deltaprs)
 
-            if (fol == null):
-                return
+def calc_avgs(data_list):
+    # Calculates averages of demand over 5 minute period by region
+    five_min_avg_NA = (sum([x['demand']['trades_NA'] for x in data_list])) / len(data_list)
+    five_min_avg_EU = (sum([x['demand']['trades_EU'] for x in data_list])) / len(data_list)
+    five_min_avg_AP = (sum([x['demand']['trades_AP'] for x in data_list])) / len(data_list)
 
-            else:
-                delta_diffs = {
+    current_demand_avgs = {
+        'NA_avg': five_min_avg_NA,
+        'EU_avg': five_min_avg_EU,
+        'AP_avg': five_min_avg_AP,
+    }
 
-                   'NA_delta': (fol['NA_avg'] - curr['NA_avg']),
-                   'EU_delta': (fol['EU_avg'] - curr['EU_avg']),
-                   'AP_delta': (fol['AP_avg'] - curr['AP_avg']),
+    accum_list.append(current_demand_avgs)
 
-                }
+    return accum_list
 
-            delta_list = delta_list.append(delta_diffs)
+def calc_delta(avg_list):
+    # Calculates averages changes of demand over 5 minute period by region
+    delta_list = []
+    for i in range(len(avg_list) - 1): # May have to change to -2 to avoid outOfBounds error
+        curr = avg_list[i]
+        fol = avg_list[i+1]
 
-        return delta_list
+        if (not fol):
+            return
 
-    def calc_deltapr(self, change_list):
-        # Calculates averages of change of change of demand over 5 minute period by region
+        else:
+            delta_diffs = {
 
-        deltapr_list = []
-        for j in range(0, (len(change_list)) - 1): # May have to change to -2 to avoid outOfBounds error
-            curr = change_list[1]
-            fol = change_list[i+1]
+               'NA_delta': (fol['NA_avg'] - curr['NA_avg']),
+               'EU_delta': (fol['EU_avg'] - curr['EU_avg']),
+               'AP_delta': (fol['AP_avg'] - curr['AP_avg']),
 
-            if (fol == null):
-                return
+            }
 
-            else:
-                deltapr_diffs = {
+        delta_list.append(delta_diffs)
 
-                    'NA_deltapr': (fol['NA_delta'] - curr['NA_delta']),
-                    'EU_deltapr': (fol['EU_delta'] - curr['EU_delta']),
-                    'AP_deltapr': (fol['AP_delta'] - curr['AP_delta']),
+    return delta_list
 
-                }
+def calc_deltapr(change_list):
+    # Calculates averages of change of change of demand over 5 minute period by region
 
-            deltapr_list = deltapr_list.append(deltapr_diffs)
+    deltapr_list = []
+    for i in range(0, (len(change_list)) - 1): # May have to change to -2 to avoid outOfBounds error
+        curr = change_list[1]
+        fol = change_list[i+1]
 
-        return deltapr_list
+        if (not fol):
+            return
 
-    def predict_demand(self, dem_list, d_list, dpr_list):
-        # Predicts demand future totals for each region
+        else:
+            deltapr_diffs = {
 
-        turn_interval = 10
+                'NA_deltapr': (fol['NA_delta'] - curr['NA_delta']),
+                'EU_deltapr': (fol['EU_delta'] - curr['EU_delta']),
+                'AP_deltapr': (fol['AP_delta'] - curr['AP_delta']),
 
-        NA_predict = (((dpr_list[0])['NA_deltapr']) * time_interval * time_interval) + (((d_list[0])['NA_delta']) * time_interval) + ((dem_list[0])['NA_avg'])
-        EU_predict = (((dpr_list[0])['EU_deltapr']) * time_interval * time_interval) + (((d_list[0])['EU_delta']) * time_interval) + ((dem_list[0])['EU_avg'])
-        AP_predict = (((dpr_list[0])['AP_deltapr']) * time_interval * time_interval) + (((d_list[0])['AP_delta']) * time_interval) + ((dem_list[0])['AP_avg'])
+            }
 
-        prediction_dict = {
+        deltapr_list.append(deltapr_diffs)
 
-            'NA_demand_predict': NA_predict,
-            'EU_demand_predict': EU_predict,
-            'AP_demand_predict': AP_predict,
+    return deltapr_list
 
-        }
+def predict_demand(dem_list, d_list, dpr_list):
+    # Predicts demand future totals for each region
 
-        return prediction_dict
+    time_interval = 10
+
+    print dpr_list[0]
+    print d_list[0]
+    print dem_list[0]
+
+    NA_predict = (((dpr_list[0])['NA_deltapr']) * time_interval * time_interval) + (((d_list[0])['NA_delta']) * time_interval) + ((dem_list[0])['NA_avg'])
+    EU_predict = (((dpr_list[0])['EU_deltapr']) * time_interval * time_interval) + (((d_list[0])['EU_delta']) * time_interval) + ((dem_list[0])['EU_avg'])
+    AP_predict = (((dpr_list[0])['AP_deltapr']) * time_interval * time_interval) + (((d_list[0])['AP_delta']) * time_interval) + ((dem_list[0])['AP_avg'])
+
+    prediction_dict = {
+
+        'NA_demand_predict': NA_predict,
+        'EU_demand_predict': EU_predict,
+        'AP_demand_predict': AP_predict,
+
+    }
+
+    return prediction_dict
