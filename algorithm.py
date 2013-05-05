@@ -88,9 +88,9 @@ class Algorithm(object):
 
         turn_interval = 10
 
-        NA_predict = (((dpr_list[0])['NA_deltapr']) * time_interval * time_interval) + (((d_list[0])['NA_delta']) * time_interval) + ((dem_list[0])['NA_avg'])
-        EU_predict = (((dpr_list[0])['EU_deltapr']) * time_interval * time_interval) + (((d_list[0])['EU_delta']) * time_interval) + ((dem_list[0])['EU_avg'])
-        AP_predict = (((dpr_list[0])['AP_deltapr']) * time_interval * time_interval) + (((d_list[0])['AP_delta']) * time_interval) + ((dem_list[0])['AP_avg'])
+        NA_predict = ((sum([x['NA_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['AP_delta'] for x in dp_list]) / len(dp_list)) * time_interval) + ((dem_list[0])['NA_avg'])
+        EU_predict = ((sum([x['EU_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['EU_delta'] for x in dp_list]) / len(dp_list)) * time_interval) + ((dem_list[0])['EU_avg'])
+        AP_predict = ((sum([x['AP_deltapr'] for x in dpr_list]) / len(dpr_list)) * time_interval * time_interval) + ((sum([x['AP_delta'] for x in dp_list]) / len(dp_list)) * time_interval) + ((dem_list[0])['AP_avg'])
 
         prediction_dict = {
 
