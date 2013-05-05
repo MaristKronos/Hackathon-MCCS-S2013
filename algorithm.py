@@ -8,9 +8,17 @@ class Algorithm(object):
 
     def take_from_list(self, data_list, amount):
         # Function to take variable number of elements of a list
-        out_list = data_list[amount:]
+        out_list = data_list[:amount]
 
         return out_list
+
+    def handle_data_input(self, full_data_list):
+        
+         avgs = calc_avgs (take_from_list (full_data_list, 10))
+         deltas = calc_delta(avgs)
+         deltaprs = calc_deltapr(deltas)
+
+         predict_demand(avgs, deltas, deltaprs)
 
     def calc_avgs(self, data_list):
         # Calculates averages of demand over 5 minute period by region
@@ -24,7 +32,9 @@ class Algorithm(object):
             'AP_avg': five_min_avg_AP,
         }
 
-        return current_demand_avgs
+        accum_list = accum_list.append(current_demand_avgs)
+
+        return accum_list
 
     def calc_delta(self, avg_list):
         # Calculates averages changes of demand over 5 minute period by region
