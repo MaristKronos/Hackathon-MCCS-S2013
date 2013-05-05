@@ -1,15 +1,8 @@
 class demand Algorithm
 
-	def na_demand(self, w, w2, h, roc,demand):
-		self.weight1 = w
-		self.weight2 = w2
-		self.hist_dem_na = h
-		self.roc_na = roc
+	import math
 		
-		demand = ((hist_dem_na * weight1) + (roc_na * weight2))/(weight1+weight2)
-		
-		return demand
-		
+	#this provides a weighted average for the current demand and the predicted demand of our algorithms
 	def demand(self, hist, w1, demand, w2, roc, w3)
 
 		self.na_demand = (hist['na']*w1+demand['na']*w2+roc['na']*w3
@@ -22,48 +15,42 @@ class demand Algorithm
 			"ap":self.ap_demand
 			}
 	
-	def web_tier(self, config, c, d):
+	def web_tier(self, config, demand):
 		
-		self.current_config = config
-		
-		self.number_of_servers = {}
-		self.change = c
-		self.demand = d
-		
-		self.change_of_servers['w_na'] = demand['na'] - ((number_of_servers * 180)/180)
-		self.change_of_servers['w_eu'] = demand['eu'] - ((number_of_servers * 180)/180)
-		self.change_of_servers['w_ap'] = demand['ap'] - ((number_of_servers * 180)/180)
+		change_of_servers['w_na'] = math.ceil( (demand['na'] - (config['web_NA_total'] * 180))/180 )
+		change_of_servers['w_eu'] = math.ceil( (demand['eu'] - (config['web_EU_total'] * 180))/180 )
+		change_of_servers['w_ap'] = math.ceil( (demand['ap'] - (config['web_AP_total'] * 180))/180 )
 		
 				
-		return java_tier(config,self.change_of_servers)
-	def java_tier(self, config, cos):
-		self.current_config = config
-		self.number_of_servers = {}
+		return java_tier(config,change_of_servers,demand)
 		
-		self.change_of_servers['j_na'] = -((number_of_servers * 400)/400)
-		self.change_of_servers['j_eu'] = -((number_of_servers * 400)/400)
-		self.change_of_servers['j_ap'] = -((number_of_servers * 400)/400)
+	def java_tier(self, config, change_of_servers, demand):
+	
+		#we don't want EU to have any java servers
+	    #update demand to match new servers
+		demand['na'] = demand['na'] + (demand['eu']*0.9)
+		demand['eu'] = 0
+		#this function calculates the demand per server and rounds up.  This will become the change for our servers
+		change_of_servers['j_na'] = math.ceil( (demand['na']-( (config['java_NA_total']+change_of_servers['w_na']) * 400) ) /400 )
+		#remove EU servers if they exist
+		change_of_servers['j_eu'] = -config['java_EU_total']
+		change_of_servers['j_ap'] = math.ceil( (demand['ap']-( (config['java_AP_total']+change_of_servers['w_ap']) * 400) ) /400 )
 		
-	    return database_tier(config,
-	def database_tier(self, config, cos):
-		self.current_config = config
-		self.number_of_servers = {}
 		
-		self.change_of_servers['d_na'] = -((number_of_servers * 1000)/1000)
-		self.change_of_servers['d_eu'] = -((number_of_servers * 1000)/1000)
-		self.change_of_servers['d_ap'] = -((number_of_servers * 1000)/1000)
 		
-		return cos
-				
-					
-			
-	if web_efficiency > 100
-				change = number_of_servers - 1
-			elif web_efficiency < 80
-				number_of_servers = number_of_servers + 1
-			elif
-			
-				return current_config - change
+	    return database_tier(config, change_of_servers, demand)
+		
+	def database_tier(self, config, change_of_servers, demand):
+		
+		demand['na'] = demand['na'] + (demand['ap']*0.9)
+		demand['ap'] = 0
+		
+		change_of_servers['d_na'] = math.ceil( (demand[na]-(config['db_NA_total']+change_of_servers['j_na'] * 1000))/1000 )
+		change_of_servers['d_eu'] = -config['db_EU_total']
+		change_of_servers['d_ap'] = -config['db_AP_total']
+		
+		return change_of_servers
+
 	
 		
 	
