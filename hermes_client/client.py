@@ -5,7 +5,6 @@ import config
 # Vendor imports
 import socket
 import re
-import collections
 
 
 class INCORRECT_STR(Exception):
@@ -46,7 +45,7 @@ class Hermes_Client(object):
     def __init__(self, conn=config.CONNECTION_TUPLES[0]):
         self._store_the_internet = []
         self._week_demand_history = {}
-        _turns = 0
+        self._turns = 0
 
         self._con = socket.create_connection(conn)
         response = self.send_receive(config.BEGIN)
@@ -173,7 +172,7 @@ class Hermes_Client(object):
         return config_dict
 
     def get_stats(self):
-	#set the week demand turn granularity(wdtg)
+        #set the week demand turn granularity(wdtg)
         self.wdtg = 30
         eu_sum = 0
         na_sum = 0
@@ -190,26 +189,36 @@ class Hermes_Client(object):
             'profit': profit
         })
 
-	#For every (wdtg) turns average the stats demand and save elsewhere to predict for next time.
-	#We multiply wdtg by 2 to convert to minutes
-#TODO: handle special case where we divide starting trades by wdtg even thought there is only 1 item...
-        if self._turns==0:
+        # For every (wdtg) turns average the stats demand and save elsewhere
+        # to predict for next time.
+        # We multiply wdtg by 2 to convert to minutes
+        # TODO: handle special case where we divide starting trades by wdtg
+        # even thought there is only 1 item...
+        if self._turns == 0:
             datapoint = self._store_the_internet[-1]
-            eu_sum = datapoint['demand']['trades_EU']  
-            na_sum = datapoint['demand']['trades_NA']  
+            eu_sum = datapoint['demand']['trades_EU']
+            na_sum = datapoint['demand']['trades_NA']
             ap_sum = datapoint['demand']['trades_AP']
-            self._week_demand_history[currTime  % datapoint['demand'] ] = {'eu': eu_sum, 'na': na_sum, 'ap': ap_sum}
-	elif self._turns % self.wdtg == 0:
+            self._week_demand_history[currTime % datapoint['demand']] = {
+                'eu': eu_sum,
+                'na': na_sum,
+                'ap': ap_sum
+            }
+        elif self._turns % self.wdtg == 0:
             eu_sum = 0
             na_sum = 0
             ap_sum = 0
-	    lst = self._store_the_internet[-self.wdtg:]
-            for x in lst:
-                eu_sum += x['demand']['trades_EU']
-                na_sum += x['demand']['trades_NA']
-                ap_sum += x['demand']['trades_AP']
+            lst = self._store_the_internet[-self.wdtg:]
+        for x in lst:
+            eu_sum += x['demand']['trades_EU']
+            na_sum += x['demand']['trades_NA']
+            ap_sum += x['demand']['trades_AP']
 
-            self._week_demand_history[currTime  % lst[-1]['demand'] ] = {'eu': eu_sum/self.wdtg, 'na': na_sum/self.wdtg, 'ap': ap_sum/self.wdtg}
+        self._week_demand_history[currTime % lst[-1]['demand']] = {
+            'eu': eu_sum/self.wdtg,
+            'na': na_sum/self.wdtg,
+            'ap': ap_sum/self.wdtg
+        }
 
         return (demand, dist, profit)
 
@@ -240,19 +249,18 @@ class Hermes_Client(object):
             "d_eu": 0,
             "d_ap": 0
         }
+
     def hist_predict(self):
-        #TODO: refine to ignore SAT and SUN, if SAT or SUN, instead return another day like friday!
+        # TODO: refine to ignore SAT and SUN, if SAT or SUN, instead
+        # return another day like friday!
         demand = self._store_the_internet[-1]['demand']
         if demand['day'] == 'SAT' or demand['day'] == 'SUN':
             return 0  # special case we will worry about later
 
-        }        
         almost_current_time = reversed(self._week_demand_history).next()
         old_history = reversed(self._store_the_internet)
         index = -1
 
         for i in old_history:
-            if i['demand']['hour'] == almost_current_time['hour'
-
-    	
-
+            if i['demand']['hour'] == almost_current_time['hour']:
+                pass
