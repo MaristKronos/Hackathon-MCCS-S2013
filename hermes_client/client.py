@@ -261,7 +261,7 @@ class Hermes_Client(object):
         days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
         day_index = days.index(myday) - 1
         if day_index < 0 or day_index >= len(days):
-            day_index = 6
+            day_index = 5
 
         return days[day_index]
 
@@ -282,31 +282,29 @@ class Hermes_Client(object):
         if demand['day'] == 'SAT' or demand['day'] == 'SUN':
             return 0  # special case we will worry about later
 
-        almost_current_time = reversed(
-            self._week_demand_history
-        ).next().split(' ')
 
-        day = almost_current_time[0]
-        hour = int(almost_current_time[1])
-        minute = int(almost_current_time[2])
-        second = int(almost_current_time[3])
+        day = demand['day']
+        hour = int(demand['hour'])
+        minute = int(demand['minute'])
+        second = int(demand['second'])
+
 
         if minute == 0:
-            return 0
+            minute = 0
         elif minute < 7.5:
-            return 7.5
+            minute = 7.5
         elif minute < 15:
-            return 15
+            minute = 15
         elif minute < 22.5:
-            return 22.5
+            minute = 22.5
         elif minute < 30:
-            return 30
+            minute = 30
         elif minute < 37.5:
-            return 37.5
+            minute = 37.5
         elif minute < 45:
-            return 45
+            minute = 45
         elif minute < 52.5:
-            return 52.5
+            minute = 52.5
         else:
             if hour == 23:
                 day = self.add_day(day)
@@ -317,7 +315,10 @@ class Hermes_Client(object):
         try:
             returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
         except:
-            day = self.sub_day(day)
-            returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
+            try:
+                day = self.sub_day(day)
+                returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
+            except:
+                return self._week_demand_history[reversed(self._week_demand_history).next()]
 
         return returnval
