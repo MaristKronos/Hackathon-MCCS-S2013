@@ -244,6 +244,50 @@ class Hermes_Client(object):
             return self.send_receive(config.CONTROL % result)
         return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
+    def parse_control_to_config(self, control_data):
+
+        config_data = {
+
+            'web_NA_total': control_data['w_na'],
+            'web_EU_total': control_data['w_eu'],
+            'web_AP_total': control_data['w_ap'],
+            'java_NA_total': control_data['j_na'],
+            'java_EU_total': control_data['j_eu'],
+            'java_AP_total': control_data['j_ap'],
+            'db_NA_total': control_data['d_na'],
+            'db_EU_total': control_data['d_eu'],
+            'db_AP_total': control_data['d_ap'],
+
+
+        }
+
+        return config_data
+
+
+    def determine_true_config(self, server_changes):
+
+        true_config = {
+
+            'web_NA_total': (self._config['web_NA_total'] + server_changes['web_NA_total']),
+            'web_EU_total': (self._config['web_EU_total'] + server_changes['web_EU_total']),
+            'web_AP_total': (self._config['web_AP_total'] + server_changes['web_AP_total']),
+            'java_NA_total': (self._config['java_NA_total'] + server_changes['java_NA_total']),
+            'java_EU_total': (self._config['java_EU_total'] + server_changes['java_EU_total']),
+            'java_AP_total': (self._config['java_AP_total'] + server_changes['java_AP_total']),
+            'db_NA_total': (self._config['db_NA_total'] + server_changes['db_NA_total']),
+            'db_EU_total': (self._config['db_EU_total'] + server_changes['db_EU_total']),
+            'db_AP_total': (self._config['db_AP_total'] + server_changes['db_AP_total']),
+
+        }
+
+        return true_config
+
+
+    def get_our_config(self, control_dict):
+
+        return (determine_true_config (parse_control_to_config (control_dict)))
+
+
     def calc_serv_delta(self):
         return {
             "w_na": 0,
