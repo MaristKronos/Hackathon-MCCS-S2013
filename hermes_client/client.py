@@ -3,6 +3,8 @@
 # Our imports
 import config
 import seed
+import algorithm
+import output_algorithm
 # Vendor imports
 import socket
 import re
@@ -156,7 +158,7 @@ class Hermes_Client(object):
 
         config_list = re.split('\s+', config_str)
         if config_list[0] != "CONFIG" and len(config_str) != 10:
-            raise CONFIG_STR_INCORRECT
+            raise CONFIG_STR_INCORRECT(config_str)
 
         config_dict = {
             'web_NA_total': int(config_list[1]),
@@ -227,7 +229,6 @@ class Hermes_Client(object):
         maybe_end = self.send_control(self.calc_serv_delta())
         if maybe_end == 'END':
             self.send_receive(config.STOP)
-            print self._week_demand_history
             return False
         else:
             self._config = self.parse_config(maybe_end)
@@ -236,7 +237,14 @@ class Hermes_Client(object):
             return True
 
     def send_control(self, all_servers):
-        return self.send_receive(config.CONTROL % all_servers)
+        # TODO, first 1 should change based on day of the week [sat, sun]
+        # Rate of change results
+        #roc = algorithm.amazing(self._store_the_internet)
+        if not len(self._store_the_internet) % 8:
+            roc = self._store_the_internet[-1]['demand']
+            result = output_algorithm.demand(self._config, self.hist_predict(), 1, self._store_the_internet[-1]['demand'], 1, roc, 0)
+            return self.send_receive(config.CONTROL % result)
+        return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
     def calc_serv_delta(self):
         return {
@@ -281,9 +289,9 @@ class Hermes_Client(object):
         ).next().split(' ')
 
         day = almost_current_time[0]
-        hour = almost_current_time[1]
-        minute = almost_current_time[2]
-        second = almost_current_time[3]
+        hour = int(almost_current_time[1])
+        minute = int(almost_current_time[2])
+        second = int(almost_current_time[3])
 
         if minute == 0:
             return 0
@@ -299,7 +307,6 @@ class Hermes_Client(object):
                 hour = 0
             else:
                 hour += 1
-            return 0
 
         try:
             returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]

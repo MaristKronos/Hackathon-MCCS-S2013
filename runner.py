@@ -5,5 +5,5 @@ i = 0
 while client.next_turn():
     i += 1
     message = client.get_stats()
-    if not i % 60:
-        print message
+
+print client.hist_predict()
