@@ -29,15 +29,15 @@ while client.next_turn():
     x.update_value('profit.percentage', message[2]['actual/max_profit_%_last period'], int(time.time()))
     x.update_value('profit.total', message[2]['total_profit'], int(time.time()))
 
-    x.update_value('load.web.na', client._config['web_NA_total'], int(time.time()))
-    x.update_value('load.web.eu', client._config['web_EU_total'], int(time.time()))
-    x.update_value('load.web.ap', client._config['web_AP_total'], int(time.time()))
-    x.update_value('load.java.na', client._config['java_NA_total'], int(time.time()))
-    x.update_value('load.java.eu', client._config['java_EU_total'], int(time.time()))
-    x.update_value('load.java.ap', client._config['java_AP_total'], int(time.time()))
-    x.update_value('load.db.na', client._config['db_NA_total'], int(time.time()))
-    x.update_value('load.db.eu', client._config['db_EU_total'], int(time.time()))
-    x.update_value('load.db.ap', client._config['db_AP_total'], int(time.time()))
+    x.update_value('load.web.na', client._config['web_NA_total'] * 180/message[1]['NA_web'], int(time.time()))
+    x.update_value('load.web.eu', client._config['web_EU_total'] * 180/message[1]['EU_web'], int(time.time()))
+    x.update_value('load.web.ap', client._config['web_AP_total'] * 180/message[1]['AP_web'], int(time.time()))
+    x.update_value('load.java.na', client._config['java_NA_total'] * 400/message[1]['NA_java'], int(time.time()))
+    x.update_value('load.java.eu', client._config['java_EU_total'] * 400/message[1]['EU_java'], int(time.time()))
+    x.update_value('load.java.ap', client._config['java_AP_total'] * 400/message[1]['AP_java'], int(time.time()))
+    x.update_value('load.db.na', client._config['db_NA_total'] * 1000/message[1]['NA_db'], int(time.time()))
+    x.update_value('load.db.eu', client._config['db_EU_total'] * 1000/message[1]['EU_db'], int(time.time()))
+    x.update_value('load.db.ap', client._config['db_AP_total'] * 1000/message[1]['AP_db'], int(time.time()))
 
     if not i % 60:
         print message
