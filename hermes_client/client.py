@@ -241,7 +241,7 @@ class Hermes_Client(object):
         if not len(self._store_the_internet) % 8:
             roc = algorithm.handle_data_input(self._store_the_internet)
             result = output_algorithm.demand(self._config, self.hist_predict(), 0, self._store_the_internet[-1]['demand'], 1, roc, 0)
-            self._config = get_our_config (result)
+            self._config = get_our_config(result)
             return self.send_receive(config.CONTROL % result)
         return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
@@ -286,7 +286,7 @@ class Hermes_Client(object):
 
     def get_our_config(self, control_dict):
 
-        return (determine_true_config (parse_control_to_config (control_dict)))
+        return determine_true_config(parse_control_to_config(control_dict))
 
 
     def calc_serv_delta(self):
