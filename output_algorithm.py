@@ -1,18 +1,19 @@
 class demand Algorithm
 
     import math
-        
+   
+    #TODO: deal with weekend edgecase for history by setting weight to 0 
     #this provides a weighted average for the current demand and the predicted demand of our algorithms
     def demand(self, hist, w1, demand, w2, roc, w3)
 
-        self.na_demand = (hist['na']*w1+demand['na']*w2+roc['na']*w3
-        self.eu_demand = (hist['eu']*w1+demand['eu']*w2+roc['eu']*w3
-        self.ap_demand = (hist['ap']*w1+demand['ap']*w2+roc['ap']*w3
+        na_demand = (hist['na']*w1+demand['trades_NA']*w2+roc['NA_demand_predict']*w3)/(w1+w2+w3)
+        eu_demand = (hist['eu']*w1+demand['trades_EU']*w2+roc['EU_demand_predict']*w3)/(w1+w2+w3)
+        ap_demand = (hist['ap']*w1+demand['trades_AP']*w2+roc['AP_demand_predict']*w3)/(w1+w2+w3)
     
         return {
-            "na":self.na_demand,
-            "eu":self.eu_demand,
-            "ap":self.ap_demand
+            "na": na_demand,
+            "eu": eu_demand,
+            "ap": ap_demand
             }
     
     def web_tier(self, config, demand):
