@@ -97,10 +97,6 @@ def predict_demand(dem_list, d_list, dpr_list):
 
     time_interval = 10
 
-    print dpr_list[0]
-    print d_list[0]
-    print dem_list[0]
-
     NA_predict = (((dpr_list[0])['NA_deltapr']) * time_interval * time_interval) + (((d_list[0])['NA_delta']) * time_interval) + ((dem_list[0])['NA_avg'])
     EU_predict = (((dpr_list[0])['EU_deltapr']) * time_interval * time_interval) + (((d_list[0])['EU_delta']) * time_interval) + ((dem_list[0])['EU_avg'])
     AP_predict = (((dpr_list[0])['AP_deltapr']) * time_interval * time_interval) + (((d_list[0])['AP_delta']) * time_interval) + ((dem_list[0])['AP_avg'])

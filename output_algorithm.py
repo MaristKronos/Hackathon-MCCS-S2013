@@ -4,11 +4,6 @@ import math
 #this provides a weighted average for the current demand and the predicted demand of our algorithms
 def demand(config, hist, w1, demand, w2, roc, w3):
 
-    print 'hist %s' % hist
-    print 'roc %s' % roc
-
-    print 'demand %s' % demand
-
     na_demand = (hist['na']*w1+demand['trades_NA']*w2+roc['NA_demand_predict']*w3)/(w1+w2+w3)
     eu_demand = (hist['eu']*w1+demand['trades_EU']*w2+roc['EU_demand_predict']*w3)/(w1+w2+w3)
     ap_demand = (hist['ap']*w1+demand['trades_AP']*w2+roc['AP_demand_predict']*w3)/(w1+w2+w3)
@@ -48,10 +43,6 @@ def java_tier(config, change_of_servers, demand):
     return database_tier(config, change_of_servers, demand)
 
 def database_tier(config, change_of_servers, demand):
-    print 'config %s' % config
-    print 'change_of_servers %s' % change_of_servers
-    print 'demand %s' % demand
-
     demand['na'] = demand['na'] + (demand['ap']*0.9)
     demand['ap'] = 0
 

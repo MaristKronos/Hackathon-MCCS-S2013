@@ -176,7 +176,7 @@ class Hermes_Client(object):
 
     def get_stats(self):
         #set the week demand turn granularity(wdtg)
-        self.wdtg = 30
+        self.wdtg = 16
         eu_sum = 0
         na_sum = 0
         ap_sum = 0
@@ -222,8 +222,6 @@ class Hermes_Client(object):
             'na': na_sum/self.wdtg,
             'ap': ap_sum/self.wdtg
         }
-        print (demand, dist, profit)
-
         return (demand, dist, profit)
 
     def next_turn(self):
@@ -242,7 +240,7 @@ class Hermes_Client(object):
         # Rate of change results
         if not len(self._store_the_internet) % 8:
             roc = algorithm.handle_data_input(self._store_the_internet)
-            result = output_algorithm.demand(self._config, self.hist_predict(), 1, self._store_the_internet[-1]['demand'], 1, roc, 1)
+            result = output_algorithm.demand(self._config, self.hist_predict(), 0, self._store_the_internet[-1]['demand'], 1, roc, 0)
             return self.send_receive(config.CONTROL % result)
         return self.send_receive('CONTROL 0 0 0 0 0 0 0 0 0')
 
@@ -295,12 +293,20 @@ class Hermes_Client(object):
 
         if minute == 0:
             return 0
+        elif minute < 7.5:
+            return 7.5
         elif minute < 15:
             return 15
+        elif minute < 22.5:
+            return 22.5
         elif minute < 30:
             return 30
+        elif minute < 37.5:
+            return 37.5
         elif minute < 45:
             return 45
+        elif minute < 52.5:
+            return 52.5
         else:
             if hour == 23:
                 day = self.add_day(day)
