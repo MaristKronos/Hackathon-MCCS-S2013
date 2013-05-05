@@ -319,6 +319,10 @@ class Hermes_Client(object):
                 day = self.sub_day(day)
                 returnval = self._week_demand_history['%s %s %s %s' % (day, hour, minute, second)]
             except:
-                return self._week_demand_history[reversed(self._week_demand_history).next()]
+                return {
+                    'eu': demand['trades_EU'],
+                    'na': demand['trades_NA'],
+                    'ap': demand['trades_AP'],
+                }
 
         return returnval
